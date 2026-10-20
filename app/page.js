@@ -118,11 +118,13 @@ export default function Home() {
         <div style={{ ...styles.panel, maxWidth: 760, margin: "0 auto" }}>
           <p style={styles.tag}>INTERACTIVE PREVIEW</p>
           <h2 style={{ fontSize: 32, margin: "10px 0" }}>Ask SupportAI a question</h2>
-          <p style={styles.muted}>Try a question about orders, refunds, or business hours. This demo uses sample replies, not a connected AI model.</p>
+          <p style={styles.muted}>Ask a question. Add your business details below so SupportAI can answer using your information.</p>
           <form onSubmit={handleSubmit}>
+            <label htmlFor="businessInfo" style={{ display: "block", fontWeight: 700, margin: "22px 0 8px" }}>Business information (optional)</label>
+            <textarea id="businessInfo" value={businessInfo} onChange={(e) => setBusinessInfo(e.target.value)} placeholder="Opening hours, refund policy, delivery details, FAQs…" rows={4} maxLength={6000} style={{ width: "100%", boxSizing: "border-box", padding: 14, borderRadius: 10, border: "1px solid #3a4565", background: "#0b1020", color: "#f5f7ff", font: "inherit", resize: "vertical" }} />
             <label htmlFor="question" style={{ display: "block", fontWeight: 700, margin: "22px 0 8px" }}>Your question</label>
             <textarea id="question" value={message} onChange={(e) => setMessage(e.target.value)} placeholder="e.g. How can I get a refund?" rows={3} style={{ width: "100%", boxSizing: "border-box", padding: 14, borderRadius: 10, border: "1px solid #3a4565", background: "#0b1020", color: "#f5f7ff", font: "inherit", resize: "vertical" }} />
-            <button type="submit" style={{ ...styles.button, marginTop: 12 }}>Send question ↗</button>
+            <button type="submit" disabled={loading} style={{ ...styles.button, marginTop: 12, opacity: loading ? 0.7 : 1 }}>{loading ? "Thinking…" : "Ask SupportAI ↗"}</button>
           </form>
           {reply && <div role="status" style={{ background: "#202943", border: "1px solid #3a4565", padding: 18, borderRadius: 12, marginTop: 20 }}><strong style={{ color: "#bdb5ff" }}>SupportAI reply</strong><p style={{ lineHeight: 1.7, marginBottom: 0 }}>{reply}</p></div>}
         </div>
@@ -130,7 +132,7 @@ export default function Home() {
 
       <section style={{ ...styles.section, paddingTop: 20, paddingBottom: 70, textAlign: "center" }}>
         <h2 style={{ fontSize: 30 }}>Ready to make support simpler?</h2>
-        <p style={styles.muted}>SupportAI is an early MVP. Account access, live AI answers, and subscriptions are not enabled yet.</p>
+        <p style={styles.muted}>Live AI answers are being tested. Customer accounts and subscriptions are not enabled yet.</p>
         <a href="#demo" style={styles.button}>Explore the demo ↑</a>
       </section>
       <footer style={{ borderTop: "1px solid #252e48", padding: 24, textAlign: "center", color: "#8e99b6", fontSize: 13 }}>
