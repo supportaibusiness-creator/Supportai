@@ -80,7 +80,7 @@ export default function Home() {
     <main style={styles.page}>
       <nav style={styles.nav}>
         <div style={styles.logo}><span style={{ color: "#9d91ff" }}>✦</span> SupportAI</div>
-        <a href="#demo" style={styles.button}>Try the demo ↗</a>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}><a href="/login" style={{ ...styles.button, background: "transparent", color: "#f5f7ff", border: "1px solid #3a4565" }}>Business login</a><a href="#demo" style={styles.button}>Try the demo ↗</a></div>
       </nav>
 
       <section style={{ ...styles.section, paddingTop: 72, paddingBottom: 72, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 360px), 1fr))", alignItems: "center", gap: 44 }}>
