@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const faqs = [
   {
@@ -21,7 +21,27 @@ export default function Home() {
   const [message, setMessage] = useState("");
   const [reply, setReply] = useState("");
   const [businessInfo, setBusinessInfo] = useState("");
+  const [businessInfoLoaded, setBusinessInfoLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    try {
+      const savedInfo = window.localStorage.getItem("supportai-business-info");
+      if (savedInfo) setBusinessInfo(savedInfo);
+    } catch {
+      // Storage may be unavailable in private browsing; the demo still works.
+    }
+    setBusinessInfoLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (!businessInfoLoaded) return;
+    try {
+      window.localStorage.setItem("supportai-business-info", businessInfo);
+    } catch {
+      // The information remains usable for this session if storage is unavailable.
+    }
+  }, [businessInfo, businessInfoLoaded]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -118,7 +138,7 @@ export default function Home() {
         <div style={{ ...styles.panel, maxWidth: 760, margin: "0 auto" }}>
           <p style={styles.tag}>INTERACTIVE PREVIEW</p>
           <h2 style={{ fontSize: 32, margin: "10px 0" }}>Ask SupportAI a question</h2>
-          <p style={styles.muted}>Ask a question. Add your business details below so SupportAI can answer using your information.</p>
+          <p style={styles.muted}>Ask a question. Add your business details below so SupportAI can answer using your information. This demo saves details in this browser only.</p>
           <form onSubmit={handleSubmit}>
             <label htmlFor="businessInfo" style={{ display: "block", fontWeight: 700, margin: "22px 0 8px" }}>Business information (optional)</label>
             <textarea id="businessInfo" value={businessInfo} onChange={(e) => setBusinessInfo(e.target.value)} placeholder="Opening hours, refund policy, delivery details, FAQs…" rows={4} maxLength={6000} style={{ width: "100%", boxSizing: "border-box", padding: 14, borderRadius: 10, border: "1px solid #3a4565", background: "#0b1020", color: "#f5f7ff", font: "inherit", resize: "vertical" }} />
