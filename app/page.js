@@ -20,21 +20,29 @@ const faqs = [
 export default function Home() {
   const [message, setMessage] = useState("");
   const [reply, setReply] = useState("");
+  const [businessInfo, setBusinessInfo] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     const question = message.trim();
-    if (!question) return;
-    const match = faqs.find((item) =>
-      (item.q + " " + item.a).toLowerCase().split(/[^a-z0-9]+/).some(
-        (word) => word.length > 3 && question.toLowerCase().includes(word)
-      )
-    );
-    setReply(
-      match
-        ? match.a
-        : "Thanks for reaching out! This is a preview of SupportAI. Connect your business knowledge base to give customers accurate, personalized answers. For now, our support team will be happy to help."
-    );
+    if (!question || loading) return;
+    setLoading(true);
+    setReply("");
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question, businessInfo }),
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Please try again.");
+      setReply(data.reply);
+    } catch (error) {
+      setReply(error.message || "Could not reach SupportAI. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   const styles = {
