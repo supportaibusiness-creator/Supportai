@@ -15,7 +15,7 @@ export default function LoginPage() {
   async function handleSubmit(event) {
     event.preventDefault();
     if (!supabase) {
-      setMessage("Supabase isn't connected yet. Add the two Supabase environment variables in Vercel and redeploy.");
+      setMessage("SupportAI is not connected to its account service. Please try again later.");
       return;
     }
     setBusy(true);
@@ -27,7 +27,7 @@ export default function LoginPage() {
         if (data.session) {
           router.push("/dashboard");
         } else {
-          setMessage("Account created. Check your email to confirm your account, then return here to log in.");
+          setMessage("Account created. Check your email to confirm your account, then log in.");
           setMode("login");
         }
       } else {
@@ -37,6 +37,30 @@ export default function LoginPage() {
       }
     } catch (error) {
       setMessage(error.message || "Couldn't complete that request. Please try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function sendRecovery() {
+    if (!supabase) {
+      setMessage("SupportAI is not connected to its account service. Please try again later.");
+      return;
+    }
+    if (!email.trim()) {
+      setMessage("Enter your email address first.");
+      return;
+    }
+    setBusy(true);
+    setMessage("");
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) throw error;
+      setMessage("If an account exists for that email, a password-reset link has been sent. Check your inbox and spam folder.");
+    } catch (error) {
+      setMessage(error.message || "Couldn't send the reset email. Please try again.");
     } finally {
       setBusy(false);
     }
@@ -58,6 +82,7 @@ export default function LoginPage() {
           <input id="password" type="password" autoComplete={mode === "signup" ? "new-password" : "current-password"} minLength={6} required value={password} onChange={e => setPassword(e.target.value)} style={inputStyle} />
           <button disabled={busy} type="submit" style={{ ...buttonStyle, opacity: busy ? 0.7 : 1 }}>{busy ? "Please wait…" : mode === "signup" ? "Create account" : "Log in"}</button>
         </form>
+        {mode === "login" && <button type="button" disabled={busy} onClick={sendRecovery} style={{ width: "100%", marginTop: 14, border: 0, background: "transparent", color: "#bdb5ff", font: "inherit", cursor: "pointer", textDecoration: "underline" }}>Forgot your password?</button>}
         {message && <p role="status" style={{ background: "#202943", borderRadius: 10, padding: 12, lineHeight: 1.5, overflowWrap: "anywhere" }}>{message}</p>}
         <p style={{ color: "#aab3cc", marginTop: 20, fontSize: 14 }}>
           {mode === "signup" ? "Already have an account? " : "New to SupportAI? "}
