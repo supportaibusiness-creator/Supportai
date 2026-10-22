@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { supabase } from "../lib/supabase";
 
 const faqs = [
   {
@@ -25,13 +26,40 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    try {
-      const savedInfo = window.localStorage.getItem("supportai-business-info");
-      if (savedInfo) setBusinessInfo(savedInfo);
-    } catch {
-      // Storage may be unavailable in private browsing; the demo still works.
+    let alive = true;
+
+    async function loadBusinessInfo() {
+      try {
+        const savedInfo = window.localStorage.getItem("supportai-business-info");
+        if (savedInfo && alive) setBusinessInfo(savedInfo);
+      } catch {
+        // Storage may be unavailable in private browsing; the demo still works.
+      }
+
+      if (supabase) {
+        try {
+          const { data: { session } } = await supabase.auth.getSession();
+          if (session && alive) {
+            const { data, error } = await supabase
+              .from("business_profiles")
+              .select("business_info")
+              .eq("user_id", session.user.id)
+              .maybeSingle();
+
+            if (!error && data?.business_info && alive) {
+              setBusinessInfo(data.business_info);
+            }
+          }
+        } catch {
+          // The public demo remains available if account data cannot be loaded.
+        }
+      }
+
+      if (alive) setBusinessInfoLoaded(true);
     }
-    setBusinessInfoLoaded(true);
+
+    loadBusinessInfo();
+    return () => { alive = false; };
   }, []);
 
   useEffect(() => {
