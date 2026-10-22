@@ -78,25 +78,25 @@ export default function Home() {
 
   return (
     <main style={styles.page}>
-      <nav style={styles.nav}>
-        <div style={styles.logo}><span style={{ color: "#9d91ff" }}>✦</span> SupportAI</div>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}><a href="/login" style={{ ...styles.button, background: "transparent", color: "#f5f7ff", border: "1px solid #3a4565" }}>Business login</a><a href="#demo" style={styles.button}>Try the demo ↗</a></div>
+      <nav style={{ ...styles.nav, padding: "18px 20px", flexWrap: "wrap" }}>
+        <a href="/" style={{ ...styles.logo, color: "#f5f7ff", textDecoration: "none" }}><span style={{ color: "#9d91ff" }}>✦</span> SupportAI</a>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}><a href="/login" style={{ ...styles.button, background: "transparent", color: "#f5f7ff", border: "1px solid #3a4565" }}>Log in</a><a href="/login" style={styles.button}>Get started ↗</a></div>
       </nav>
 
-      <section style={{ ...styles.section, paddingTop: 72, paddingBottom: 72, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 360px), 1fr))", alignItems: "center", gap: 44 }}>
+      <section style={{ ...styles.section, paddingTop: 38, paddingBottom: 48, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 360px), 1fr))", alignItems: "center", gap: 44 }}>
         <div>
           <p style={styles.tag}>CUSTOMER SUPPORT, REIMAGINED</p>
           <h1 style={{ fontSize: "clamp(42px, 7vw, 68px)", lineHeight: 1.04, letterSpacing: "-2.8px", margin: "18px 0" }}>
             Great support.<br /><span style={{ color: "#a69bff" }}>Less busywork.</span>
           </h1>
           <p style={{ ...styles.muted, fontSize: 18, maxWidth: 520 }}>
-            Help your customers get answers faster. SupportAI is a simple starting point for smarter, round-the-clock customer support.
+            Help your customers get answers faster. An AI support assistant that learns your business information and helps customers get answers, day or night.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginTop: 28 }}>
             <a href="#demo" style={styles.button}>Try the live demo ↓</a>
             <a href="#features" style={{ ...styles.button, background: "transparent", color: "#f5f7ff", border: "1px solid #3a4565" }}>Explore features</a>
           </div>
-          <p style={{ ...styles.muted, fontSize: 13, marginTop: 18 }}>A free preview · No account needed</p>
+          <p style={{ ...styles.muted, fontSize: 13, marginTop: 18 }}>Try the demo or create an account to set up your business.</p>
         </div>
         <div style={{ ...styles.panel, boxShadow: "0 24px 80px #0005" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, borderBottom: "1px solid #2b3553", paddingBottom: 18 }}>
@@ -138,7 +138,7 @@ export default function Home() {
         <div style={{ ...styles.panel, maxWidth: 760, margin: "0 auto" }}>
           <p style={styles.tag}>INTERACTIVE PREVIEW</p>
           <h2 style={{ fontSize: 32, margin: "10px 0" }}>Ask SupportAI a question</h2>
-          <p style={styles.muted}>Ask a question. Add your business details below so SupportAI can answer using your information. This demo saves details in this browser only.</p>
+          <p style={styles.muted}>Try a sample conversation. For saved business settings and account features, create an account or log in.</p>
           <form onSubmit={handleSubmit}>
             <label htmlFor="businessInfo" style={{ display: "block", fontWeight: 700, margin: "22px 0 8px" }}>Business information (optional)</label>
             <textarea id="businessInfo" value={businessInfo} onChange={(e) => setBusinessInfo(e.target.value)} placeholder="Opening hours, refund policy, delivery details, FAQs…" rows={4} maxLength={6000} style={{ width: "100%", boxSizing: "border-box", padding: 14, borderRadius: 10, border: "1px solid #3a4565", background: "#0b1020", color: "#f5f7ff", font: "inherit", resize: "vertical" }} />
@@ -152,7 +152,7 @@ export default function Home() {
 
       <section style={{ ...styles.section, paddingTop: 20, paddingBottom: 70, textAlign: "center" }}>
         <h2 style={{ fontSize: 30 }}>Ready to make support simpler?</h2>
-        <p style={styles.muted}>Live AI answers are being tested. Customer accounts and subscriptions are not enabled yet.</p>
+        <p style={styles.muted}>Set up your business assistant and test how it answers customer questions.</p>
         <a href="#demo" style={styles.button}>Explore the demo ↑</a>
       </section>
       <footer style={{ borderTop: "1px solid #252e48", padding: 24, textAlign: "center", color: "#8e99b6", fontSize: 13 }}>
